@@ -7,6 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', function(req, res) {
+  console.log('register()')
+  
   const {username, password} = req.body
   if (username === 'admin') {//注册失败
     //返回相应数据：失败
