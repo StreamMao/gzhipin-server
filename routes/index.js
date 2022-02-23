@@ -70,12 +70,12 @@ router.post('/update', function (req, res){
   const userid = req.cookies.userid
   //如果不存在，直接返回一个提示信息
   if(!userid) {
-    res.send({code: 1, msg:'请先登陆'})
-    return
+    return res.send({code: 1, msg:'请先登陆'})
   }
   //存在，根据usrid更新对应的user文档数据
   //得到提交的用户数据
     const user = req.body //req.body里没有id
+    console.log(user)
     UserModel.findByIdAndUpdate({_id:userid}, user, function (error, oldUser){
       if(!oldUser) {
         //查询不到，说明id有问题，通知浏览器删除userid cookie
@@ -96,10 +96,10 @@ router.post('/update', function (req, res){
 router.get('/user', (req, res) => {
   //从请求的cookie中获得userid
   const userid = req.cookies.userid
+  // console.log(userid)
   //如果不存在，直接返回一个提示信息
   if(!userid) {
-    res.send({code: 1, msg:'请先登陆'})
-    return
+    return res.send({code: 1, msg:'请先登陆'})
   }
   //根据userid查询对应的user
   UserModel.findOne({_id:userid}, filter, function (error, user) {
