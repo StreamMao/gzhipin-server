@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-const md5 = require('blueimp-md5')
+const md5 = require('blueimp-md5');
+const { route } = require('express/lib/application');
 const UserModel = require('../db/models').UserModel
 const filter = {password: 0, __v: 0} //指定过滤的属性
 
@@ -90,5 +91,21 @@ router.post('/update', function (req, res){
       }
     })
 })
+
+//获取用户信息的路由（根据cookie中的userid）
+router.get('/user', (req, res) => {
+  //从请求的cookie中获得userid
+  const userid = req.cookies.userid
+  //如果不存在，直接返回一个提示信息
+  if(!userid) {
+    res.send({code: 1, msg:'请先登陆'})
+    return
+  }
+  //根据userid查询对应的user
+  UserModel.findOne({_id:userid}, filter, function (error, user) {
+    res.send({code:0, data:user})
+  })
+})
+
 
 module.exports = router;
